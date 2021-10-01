@@ -1,0 +1,24 @@
+{
+  "name": "cancel-queued-orders-microservice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tiny-organics/cancel-queued-orders-microservice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tiny-organics/cancel-queued-orders-microservice/issues"
+  },
+  "homepage": "https://github.com/tiny-organics/cancel-queued-orders-microservice#readme",
+  "dependencies": {
+    "ronin-mocks": "^0.1.6",
+    "ronin-server": "^0.1.3"
+  }
+}
