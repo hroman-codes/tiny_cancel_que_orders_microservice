@@ -6,16 +6,8 @@ app.get('/', function (req, res) {
     res.send('GET')
 })
 
-app.post('/', function (req, res) {
+app.post('/subscription/webhook', function (req, res) {
     res.send('POST')
-})
-
-app.put('/user', function (req, res) {
-    res.send('PUT')
-})
-
-app.delete('/user', function (req, res) {
-    res.send('DELETE')
 })
 
 app.listen(port, () => {
