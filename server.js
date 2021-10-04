@@ -1,7 +1,25 @@
-const ronin = require('ronin-server')
-const mocks = require('ronin-mocks')
+const express = require('express')
+const app = express()
+const port = 3000
 
-const server = ronin.server()
+app.get('/', function (req, res) {
+    res.send('GET')
+})
 
-server.use('/', mocks.server(server.Router(), false, true))
-server.start()
+app.post('/', function (req, res) {
+    res.send('POST')
+})
+
+app.put('/user', function (req, res) {
+    res.send('PUT')
+})
+
+app.delete('/user', function (req, res) {
+    res.send('DELETE')
+})
+
+app.listen(port, () => {
+    console.log(`Listen to port${port}`)
+})
+
+module.exports = app;
