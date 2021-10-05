@@ -1,7 +1,16 @@
-const ronin = require('ronin-server')
-const mocks = require('ronin-mocks')
+const express = require('express')
+const app = express()
+const port = 8080
+const host = '0.0.0.0'
 
-const server = ronin.server()
+app.get('/', function (req, res) {
+    res.send('GET')
+})
 
-server.use('/', mocks.server(server.Router(), false, true))
-server.start()
+app.post('/subscription/webhook', function (req, res) {
+    res.send('POST')
+})
+
+app.listen(port, host);
+
+module.exports = app;
