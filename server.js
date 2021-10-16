@@ -13,11 +13,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 if(process.env.NODE_ENV === 'production') {
-    console.log('We are running in production mode')
 
-    // listen for root http call 
     app.get('/', function (req, res) {
-        // instantiate a recharge session (include the api token)
         const rechargeClient = Axios.create({
             baseURL: 'https://api.rechargeapps.com/',
             timeout: 29000,
@@ -29,7 +26,6 @@ if(process.env.NODE_ENV === 'production') {
             }
         });
 
-        // create a webhook
         rechargeClient.post('https://api.rechargeapps.com/webhooks', {
                 "address": "https://7eb0-173-77-234-181.ngrok.io/subscription/webhook",
                 "topic": "subscription/cancelled"
@@ -43,11 +39,10 @@ if(process.env.NODE_ENV === 'production') {
             console.log(err)
         });
     })
-    // listen for webhook response
+    
     app.post('/subscription/webhook', function (req, res) {
-        // grab cusomer ID 
+        // grab cusomer ID
         let customerID = req.body.subscription.customer_id;
-
         // fetch the subscription object
         axios.get(`https://api.rechargeapps.com/subscriptions?customer_id=${customerID}&status=ACTIVE`, {
             headers: {
@@ -58,13 +53,10 @@ if(process.env.NODE_ENV === 'production') {
             }
         })
         .then((response) => {
-            let activeSubscription = response.data;
-            console.log('activeSubscription >>>', activeSubscription)
+            let activeSubscription = response.data.subscriptions;            
             // if customer doesnt have active subs
             if (activeSubscription.length === 0) {
                 // proceed to check for queued orders ✅
-                console.log('Customer doesnt have active subs go ahead check for queued orders ✅')
-                
                 axios.get(`https://api.rechargeapps.com/orders?customer_id=${customerID}&status=QUEUED`, {
                         headers: {
                         'Accept': 'application/json; charset=utf-8;',
@@ -74,19 +66,14 @@ if(process.env.NODE_ENV === 'production') {
                         }
                     })
                     .then((response) => {
-                        let queuedOrders = response.data
-                        console.log('queuedOrders >>>', queuedOrders);
+                        let queuedOrders = response.data.orders
                         // if queued orders exist 
                         if (queuedOrders.length > 0) {
                             // iterate through the list of orders
                             for (let i = 0; i < queuedOrders.length; i++) {
                                 let orderID = queuedOrders[i].id;
-                                console.log('orderID >>', orderID);
-                                console.log(`delete this order ${queuedOrders[i]} ❌`);
-                                // `https://api.rechargeapps.com/queuedOrders/${orderID}` << Real recharge end point
-                                // `https://776d-173-77-234-181.ngrok.io/queuedOrders/${orderID}` << mock api json server queuedOrders
                                 // delete the order
-                                axios.delete(`https://776d-173-77-234-181.ngrok.io/queuedOrders/${orderID}`, {
+                                axios.delete(`https://api.rechargeapps.com/queuedOrders/${orderID}`, {
                                     headers: {
                                         'X-Recharge-Access-Token': process.env.RECHARGE_TEST_API_KEY,
                                         }
@@ -95,8 +82,6 @@ if(process.env.NODE_ENV === 'production') {
                         } else {
                             // if no queued orders exist then do nothing
                             console.log('Customer has no queued orders ❌')
-                            // res.status(404).send('Customer has no queued orders ❌')
-                            // return 
                         }
                     })
                     .catch((err) => {
@@ -105,8 +90,6 @@ if(process.env.NODE_ENV === 'production') {
             } else {
                 // if customer has active subs do nothing 
                 console.log('Customer has active subs do nothing ❌')
-                // res.status(404).send('Customer has active subs do nothing ❌')
-                // return
             }
         })
         .catch((err) => {
@@ -118,9 +101,7 @@ if(process.env.NODE_ENV === 'production') {
     app.listen(port, host);
     module.exports = app;
 
-} else {
-    console.log('We are running in development mode')
-    // listen for root http call 
+} else {    // listen for root http call 
     app.get('/', function (req, res) {
         // instantiate a recharge session (include the api token)
         const rechargeClient = Axios.create({
@@ -190,7 +171,6 @@ if(process.env.NODE_ENV === 'production') {
                                 let orderID = queuedOrders[i].id;
                                 console.log('orderID >>', orderID);
                                 console.log(`delete this order ${queuedOrders[i]} ❌`);
-                                // `https://776d-173-77-234-181.ngrok.io/queuedOrders/${orderID}` << mock api json server queuedOrders
                                 // delete the order
                                 axios.delete(`https://776d-173-77-234-181.ngrok.io/queuedOrders/${orderID}`, {
                                     headers: {
@@ -221,4 +201,7 @@ if(process.env.NODE_ENV === 'production') {
 
     app.listen(port, host);
     module.exports = app;
+    
 }
+
+console.log(`We are running in ${process.env.NODE_ENV} mode 🏃‍♂️`)
