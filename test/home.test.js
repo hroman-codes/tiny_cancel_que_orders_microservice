@@ -12,15 +12,6 @@ describe('Unit test the get endpoint', function() {
             assert.equal(response.status, 200)
         })
     });
-
-    it('should return message on rendering', function() {
-        return request(app)
-        .get('/')
-        .then(function(response) {
-            expect(response.text).to.contain('GET')
-        })
-    });
-    
 });
 
 describe('Unit test the post endpoint', function() {
@@ -32,13 +23,4 @@ describe('Unit test the post endpoint', function() {
             assert.equal(response.status, 200)
         })
     });
-
-    it('should return message on rendering', function() {
-        return request(app)
-        .post('/subscription/webhook')
-        .then(function(response) {
-            expect(response.text).to.contain('POST')
-        })
-    });
-
 })
