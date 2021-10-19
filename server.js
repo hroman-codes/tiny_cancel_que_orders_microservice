@@ -27,7 +27,7 @@ if(process.env.NODE_ENV === 'production') {
         });
 
         rechargeClient.post('https://api.rechargeapps.com/webhooks', {
-                "address": "https://7eb0-173-77-234-181.ngrok.io/subscription/webhook",
+                "address": "process.env.WEBHOOK_RESPONSE_URL",
                 "topic": "subscription/cancelled"
             }
         )
