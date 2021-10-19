@@ -27,7 +27,7 @@ if(process.env.NODE_ENV === 'production') {
         });
 
         rechargeClient.post('https://api.rechargeapps.com/webhooks', {
-                "address": "process.env.WEBHOOK_RESPONSE_URL",
+                "address": process.env.WEBHOOK_RESPONSE_URL,
                 "topic": "subscription/cancelled"
             }
         )
