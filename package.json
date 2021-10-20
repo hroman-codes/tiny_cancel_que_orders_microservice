@@ -12,6 +12,9 @@
     "type": "git",
     "url": "git+https://github.com/tiny-organics/cancel-queued-orders-microservice.git"
   },
+  "engines": {
+    "node": "14.18.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
