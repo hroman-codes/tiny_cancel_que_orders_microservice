@@ -8,8 +8,6 @@ const { default: axios } = require('axios')
 const port = process.env.PORT || 8080
 const host = '0.0.0.0'
 
-// const PORT = process.env.PORT || 8080
-
 require('dotenv').config()
 
 app.use(express.json())
