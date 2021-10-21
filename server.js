@@ -22,8 +22,7 @@ if(process.env.NODE_ENV === 'production') {
             headers: {
             'Accept': 'application/json; charset=utf-8;',
             'Content-Type': 'application/json',
-            'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
-            'secrete': process.env.APP_SECRETE,
+            'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY
             }
         });
 
@@ -102,9 +101,8 @@ if(process.env.NODE_ENV === 'production') {
     app.listen(port, host, function() {
         console.log(`Listening on ${ port }`)
     });
-    // app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+    
     module.exports = app;
-
 } else {    // listen for root http call 
     app.get('/', function (req, res) {
         // instantiate a recharge session (include the api token)
@@ -114,8 +112,7 @@ if(process.env.NODE_ENV === 'production') {
             headers: {
             'Accept': 'application/json; charset=utf-8;',
             'Content-Type': 'application/json',
-            'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
-            'secrete': process.env.APP_SECRETE,
+            'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY
             }
         });
 
@@ -203,13 +200,11 @@ if(process.env.NODE_ENV === 'production') {
         res.status(200).end()
     })
 
-    // app.listen(port, host);
-    // app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
     app.listen(port, host, function() {
         console.log(`Listening on ${ port }`)
     });
+
     module.exports = app;
-    
 }
 
 console.log(`We are running in ${process.env.NODE_ENV} mode 🏃‍♂️`)
