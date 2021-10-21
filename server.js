@@ -131,11 +131,8 @@ if(process.env.NODE_ENV === 'production') {
 
     // listen for webhook response
     app.post('/subscription/webhook', function (req, res) {
-        // grab cusomer ID 
-        let customerID = req.body.subscription.customer_id;
-
         // fetch the subscription that are active
-        axios.get(`https://api.rechargeapps.com/subscriptions?customer_id=${customerID}&status=ACTIVE`, {
+        axios.get(`https://776d-173-77-234-181.ngrok.io/subscriptions`, {
             headers: {
                 'Accept': 'application/json; charset=utf-8;',
                 'Content-Type': 'application/json',
