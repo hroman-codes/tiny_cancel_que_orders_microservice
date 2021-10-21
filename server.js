@@ -22,7 +22,7 @@ if(process.env.NODE_ENV === 'production') {
             headers: {
             'Accept': 'application/json; charset=utf-8;',
             'Content-Type': 'application/json',
-            'X-Recharge-Access-Token': process.env.RECHARGE_TEST_API_KEY,
+            'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
             'secrete': process.env.APP_SECRETE,
             }
         });
@@ -49,7 +49,7 @@ if(process.env.NODE_ENV === 'production') {
             headers: {
                 'Accept': 'application/json; charset=utf-8;',
                 'Content-Type': 'application/json',
-                'X-Recharge-Access-Token': process.env.RECHARGE_TEST_API_KEY,
+                'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
                 'secrete': process.env.APP_SECRETE, 
             }
         })
@@ -62,7 +62,7 @@ if(process.env.NODE_ENV === 'production') {
                         headers: {
                         'Accept': 'application/json; charset=utf-8;',
                         'Content-Type': 'application/json',
-                        'X-Recharge-Access-Token': process.env.RECHARGE_TEST_API_KEY,
+                        'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
                         'secrete': process.env.APP_SECRETE,
                         }
                     })
@@ -76,7 +76,7 @@ if(process.env.NODE_ENV === 'production') {
                                 // delete the order
                                 axios.delete(`https://api.rechargeapps.com/queuedOrders/${orderID}`, {
                                     headers: {
-                                        'X-Recharge-Access-Token': process.env.RECHARGE_TEST_API_KEY,
+                                        'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
                                         }
                                 })
                             }
@@ -114,7 +114,7 @@ if(process.env.NODE_ENV === 'production') {
             headers: {
             'Accept': 'application/json; charset=utf-8;',
             'Content-Type': 'application/json',
-            'X-Recharge-Access-Token': process.env.RECHARGE_TEST_API_KEY,
+            'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
             'secrete': process.env.APP_SECRETE,
             }
         });
@@ -144,7 +144,7 @@ if(process.env.NODE_ENV === 'production') {
             headers: {
                 'Accept': 'application/json; charset=utf-8;',
                 'Content-Type': 'application/json',
-                'X-Recharge-Access-Token': process.env.RECHARGE_TEST_API_KEY,
+                'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
                 'secrete': process.env.APP_SECRETE, 
             }
         })
@@ -161,7 +161,7 @@ if(process.env.NODE_ENV === 'production') {
                         headers: {
                         'Accept': 'application/json; charset=utf-8;',
                         'Content-Type': 'application/json',
-                        'X-Recharge-Access-Token': process.env.RECHARGE_TEST_API_KEY,
+                        'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
                         'secrete': process.env.APP_SECRETE,
                         }
                     })
@@ -178,7 +178,7 @@ if(process.env.NODE_ENV === 'production') {
                                 // delete the order
                                 axios.delete(`https://776d-173-77-234-181.ngrok.io/queuedOrders/${orderID}`, {
                                     headers: {
-                                        'X-Recharge-Access-Token': process.env.RECHARGE_TEST_API_KEY,
+                                        'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
                                         }
                                 })
                             }
