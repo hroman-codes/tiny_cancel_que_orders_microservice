@@ -5,10 +5,10 @@ const { response } = require('express')
 const Axios = require('axios')
 const { default: axios } = require('axios')
 
-// const port = 8080
-// const host = '0.0.0.0'
+const port = process.env.PORT || 8080
+const host = '0.0.0.0'
 
-const PORT = process.env.PORT || 8080
+// const PORT = process.env.PORT || 8080
 
 require('dotenv').config()
 
@@ -101,8 +101,10 @@ if(process.env.NODE_ENV === 'production') {
         res.status(200).end()
     })
 
-    // app.listen(port, host);
-    app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+    app.listen(port, host, function() {
+        console.log(`Listening on ${ port }`)
+    });
+    // app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
     module.exports = app;
 
 } else {    // listen for root http call 
@@ -204,7 +206,10 @@ if(process.env.NODE_ENV === 'production') {
     })
 
     // app.listen(port, host);
-    app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+    // app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+    app.listen(port, host, function() {
+        console.log(`Listening on ${ port }`)
+    });
     module.exports = app;
     
 }
