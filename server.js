@@ -48,8 +48,7 @@ if(process.env.NODE_ENV === 'production') {
             headers: {
                 'Accept': 'application/json; charset=utf-8;',
                 'Content-Type': 'application/json',
-                'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
-                'secrete': process.env.APP_SECRETE, 
+                'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY 
             }
         })
         .then((response) => {
@@ -61,8 +60,7 @@ if(process.env.NODE_ENV === 'production') {
                         headers: {
                         'Accept': 'application/json; charset=utf-8;',
                         'Content-Type': 'application/json',
-                        'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
-                        'secrete': process.env.APP_SECRETE,
+                        'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY
                         }
                     })
                     .then((response) => {
@@ -141,8 +139,7 @@ if(process.env.NODE_ENV === 'production') {
             headers: {
                 'Accept': 'application/json; charset=utf-8;',
                 'Content-Type': 'application/json',
-                'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
-                'secrete': process.env.APP_SECRETE, 
+                'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY
             }
         })
         .then((response) => {
@@ -158,8 +155,7 @@ if(process.env.NODE_ENV === 'production') {
                         headers: {
                         'Accept': 'application/json; charset=utf-8;',
                         'Content-Type': 'application/json',
-                        'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
-                        'secrete': process.env.APP_SECRETE,
+                        'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY
                         }
                     })
                     .then((response) => {
