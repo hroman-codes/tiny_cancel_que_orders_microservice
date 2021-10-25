@@ -20,6 +20,33 @@ const app = require('../server.js')
 // 20 sec run API
 // 30 sec run API
 
+describe('Get endpoint', function() {
+    test('should create webhook and return an 200 status', async () => {
+        const response = await supertest(app).get('/')
+        expect(200)
+        expect(response.body).toEqual(
+            expect.objectContaining({
+                webhook: expect.objectContaining({
+                    address: expect.any(String), 
+                    id: expect.any(Number),
+                    topic: expect.stringContaining('subscription/cancelled'),
+                    version: expect.any(String)
+                })
+            })
+        )
+    })
+});
+
+// describe('Unit test the post endpoint', function() {
+    
+//     it('should return an ok status', function() {
+//         return request(app)
+//         .post('/subscription/webhook')
+//         .then(function(response) {
+//             assert.equal(response.status, 200)
+//         })
+//     });
+// })
 
 
 
