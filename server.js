@@ -144,7 +144,7 @@ if(process.env.NODE_ENV === 'production') {
             // if customer doesnt have active subs
             if (activeSubscription.length === 0) {
                 // proceed to check for queued orders ✅
-                // console.log('Customer doesnt have active subs go ahead check for queued orders ✅')
+                console.log('Customer doesnt have active subs go ahead check for queued orders ✅')
                 // `https://f54f-173-77-234-181.ngrok.io/queuedOrders` <<< mock api json server queuedOrders
                 // `https://f54f-173-77-234-181.ngrok.io/nonQueuedOrders` <<< mock api json server nonQueuedOrders
                 axios.get(`https://f54f-173-77-234-181.ngrok.io/queuedOrders`, {
@@ -156,14 +156,14 @@ if(process.env.NODE_ENV === 'production') {
                     })
                     .then((response) => {
                         let queuedOrders = response.data
-                        // console.log('queuedOrders >>>', queuedOrders);
+                        console.log('queuedOrders >>>', queuedOrders);
                         // if queued orders exist 
                         if (queuedOrders.length > 0) {
                             // iterate through the list of orders
                             for (let i = 0; i < queuedOrders.length; i++) {
                                 let orderID = queuedOrders[i].id;
-                                // console.log('orderID >>', orderID);
-                                // console.log(`delete this order ${queuedOrders[i]} ❌`);
+                                console.log('orderID >>', orderID);
+                                console.log(`delete this order ${queuedOrders[i]} ❌`);
                                 // delete the order
                                 axios.delete(`https://f54f-173-77-234-181.ngrok.io/queuedOrders/${orderID}`, {
                                     headers: {

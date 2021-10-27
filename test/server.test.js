@@ -6,11 +6,8 @@ const app = require('../server.js')
 // webhook should recieve a 200 status code ✅
 // it should lookout to see if webhook is set / bad input from the webhook ✅
 // it should test to see if customer exist ✅
-// it should handle 404 Not Found
-// it should hanlde 502 Bad Gateway
-// it should handle 500 Internal Server Error 
+// it should handle 404 Not Found ✅ 
 // it should test for latency 
-// it should test for internet throttling
 // it should do A retry if the que orders get tied up 
 
 // Use exponential backoff (use timeout for this)
@@ -20,9 +17,10 @@ const app = require('../server.js')
 
 describe('GET endpoint', function() {
 
-    test('respond with 200 status code, should specify json content', 'should create a subscription/cancelled webhook', async () => {
+    test('respond with 200 status code and not 404, should specify json content, should create a subscription/cancelled webhook', async () => {
         const response = await supertest(app).get('/')
         expect(response.statusCode).toBe(200)
+        expect(response.statusCode).not.toBe(404)
         expect(response.headers['content-type']).toEqual(expect.stringContaining('json'))
         expect(response.body).toEqual(
             expect.objectContaining({
@@ -40,12 +38,17 @@ describe('GET endpoint', function() {
 
 describe('POST endpoint', function() {
     
-    test('should return an 200 status', async function() {
+    test('should return an 200 status', async () => {
         const response = await supertest(app).post('/subscription/webhook')
         expect(response.statusCode).toBe(200)
     });
 
-    test('should test to see if customer account is deleted', async () => {
+    test('should handle 404 HTTP error code', async () => {
+        const response = await supertest(app).post('/subscription/webhook')
+        expect(response.statusCode).not.toBe(404)
+    })
+
+    test('should test to if customer account is active', async () => {
         const response = await supertest(app).post('/subscription/webhook').send({ 
             customer_id: 1,
         })
