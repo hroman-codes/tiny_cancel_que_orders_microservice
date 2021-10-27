@@ -90,6 +90,10 @@ if(process.env.NODE_ENV === 'production') {
         res.status(200).end()
     })
 
+    app.use(function (req, res, next) {
+        res.status(404).send('404 Unable to find the requested resource!')
+    })
+
     app.listen(port, host, function() {
         console.log(`Listening on ${ port }`)
     });
@@ -178,6 +182,10 @@ if(process.env.NODE_ENV === 'production') {
             console.log(err)
         })
         res.status(200).end()
+    })
+
+    app.use(function (req, res, next) {
+        res.status(404).send('404 Unable to find the requested resource!')
     })
 
     app.listen(port, host, function() {
