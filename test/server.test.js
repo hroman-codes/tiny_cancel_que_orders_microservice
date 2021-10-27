@@ -4,26 +4,26 @@ const app = require('../server.js')
 
 // root should recieve a 200 status code ✅
 // webhook should recieve a 200 status code ✅
-// it should lookout for bad input from the webhook
-// it should lookout to see if webhook is set 
-// it should test for internet connection 
+// it should lookout to see if webhook is set / bad input from the webhook ✅
+// it should test to see if customer exist ✅
+// it should handle 404 Not Found
+// it should hanlde 502 Bad Gateway
+// it should handle 500 Internal Server Error 
 // it should test for latency 
 // it should test for internet throttling
 // it should do A retry if the que orders get tied up 
-// it should test to see if customer gets deleted 
-// it should handle 404
-// it shoyld handle 400
-// it should handle 504 
 
 // Use exponential backoff (use timeout for this)
 // 10 sec run API
 // 20 sec run API
 // 30 sec run API
 
-describe('Get endpoint', function() {
-    test('should create webhook and return an 200 status', async () => {
+describe('GET endpoint', function() {
+
+    test('respond with 200 status code, should specify json content', 'should create a subscription/cancelled webhook', async () => {
         const response = await supertest(app).get('/')
-        expect(200)
+        expect(response.statusCode).toBe(200)
+        expect(response.headers['content-type']).toEqual(expect.stringContaining('json'))
         expect(response.body).toEqual(
             expect.objectContaining({
                 webhook: expect.objectContaining({
@@ -35,19 +35,21 @@ describe('Get endpoint', function() {
             })
         )
     })
+
 });
 
-// describe('Unit test the post endpoint', function() {
+describe('POST endpoint', function() {
     
-//     it('should return an ok status', function() {
-//         return request(app)
-//         .post('/subscription/webhook')
-//         .then(function(response) {
-//             assert.equal(response.status, 200)
-//         })
-//     });
-// })
+    test('should return an 200 status', async function() {
+        const response = await supertest(app).post('/subscription/webhook')
+        expect(response.statusCode).toBe(200)
+    });
 
+    test('should test to see if customer account is deleted', async () => {
+        const response = await supertest(app).post('/subscription/webhook').send({ 
+            customer_id: 1,
+        })
+        expect(response.body.customer_id).toBeDefined()
+    });
 
-
-
+})
