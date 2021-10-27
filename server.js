@@ -77,17 +77,11 @@ if(process.env.NODE_ENV === 'production') {
                                         }
                                 })
                             }
-                        } else {
-                            // if no queued orders exist then do nothing
-                            console.log('Customer has no queued orders ❌')
                         }
                     })
                     .catch((err) => {
                         console.log(err)
                     })
-            } else {
-                // if customer has active subs do nothing 
-                console.log('Customer has active subs do nothing ❌')
             }
         })
         .catch((err) => {
@@ -173,20 +167,12 @@ if(process.env.NODE_ENV === 'production') {
                                         }
                                 })
                             }
-                        } else {
-                            // if no queued orders exist then do nothing
-                            // console.log('Customer has no queued orders ❌')
-                            // return 
-                        }
+                        } 
                     })
                     .catch((err) => {
                         console.log(err)
                     })
-            } else {
-                // if customer has active subs do nothing 
-                // console.log('Customer has active subs do nothing ❌')
-                // return
-            }
+            } 
         })
         .catch((err) => {
             console.log(err)
