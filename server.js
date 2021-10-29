@@ -129,7 +129,6 @@ if(process.env.NODE_ENV === 'production') {
 
     // listen for webhook response
     app.post('/subscription/webhook', function (req, res) {
-        res.send({customer_id: 1})
         // fetch the subscription that are active
         axios.get(`https://f54f-173-77-234-181.ngrok.io/subscriptions`, {
             headers: {
