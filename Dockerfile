@@ -2,7 +2,7 @@
 
 FROM node:14.18.0
 
-ENV NODE_ENV=development
+ENV NODE_ENV=production
 
 WORKDIR /app
 
