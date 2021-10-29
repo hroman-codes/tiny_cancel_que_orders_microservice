@@ -1,26 +1,16 @@
-const { response } = require('express');
+const { response, request } = require('express');
 const supertest = require('supertest');
-const app = require('../server.js')
+const app = require('../server.js');
+import 'regenerator-runtime/runtime'
+import mockAxios from 'axios';
 
-// root should recieve a 200 status code ✅
-// webhook should recieve a 200 status code ✅
-// it should lookout to see if webhook is set / bad input from the webhook ✅
-// it should test to see if customer exist ✅
-// it should handle 404 Not Found ✅ 
-// it should test for latency 
-// it should do A retry if the que orders get tied up 
-
-// Use exponential backoff (use timeout for this)
-// 10 sec run API
-// 20 sec run API
-// 30 sec run API
+jest.mock('axios');
 
 describe('GET endpoint', function() {
 
-    test('respond with 200 status code and not 404, should specify json content, should create a subscription/cancelled webhook', async () => {
+    test('respond with 200 status code, should specify json content, should create a subscription/cancelled webhook', async () => {
         const response = await supertest(app).get('/')
         expect(response.statusCode).toBe(200)
-        expect(response.statusCode).not.toBe(404)
         expect(response.headers['content-type']).toEqual(expect.stringContaining('json'))
         expect(response.body).toEqual(
             expect.objectContaining({
@@ -48,11 +38,30 @@ describe('POST endpoint', function() {
         expect(response.statusCode).not.toBe(404)
     })
 
-    test('should test to if customer account is active', async () => {
-        const response = await supertest(app).post('/subscription/webhook').send({ 
-            customer_id: 1,
+    // Attempt 1
+    test('mock axios call to API', async () => {
+        // setup
+        mockAxios.get.mockImplementationOnce(() => Promise.resolve({
+            data: {     
+                "customer_id": 1, 
+                "status": "Active" 
+            }
+        }))
+        
+        // work
+        const subscriptions = await supertest(app).post('/subscription/webhook')
+
+        // assertions
+        expect(200)
+        expect(mockAxios.get).toHaveBeenCalledTimes(3);
+        expect(mockAxios.get).toHaveBeenCalledWith("`https://api.rechargeapps.com/subscriptions?customer_id=1&status=ACTIVE`", 
+            {
+                "headers": {"Accept": "application/json; charset=utf-8;", 
+                "Content-Type": "application/json", 
+                "X-Recharge-Access-Token": process.env.RECHARGE_API_KEY
+            }
         })
-        expect(response.body.customer_id).toBeDefined()
-    });
+        expect(mockAxios.get.data.customer_id).toEqual(1)
+    })
 
 })
