@@ -28,8 +28,6 @@ describe('GET endpoint', function() {
 
 describe('POST endpoint', function() {
 
-    let JSON_SERVER_URI = process.env.JSON_SERVER_URI;
-
     beforeEach(() => {
         jest.clearAllMocks();
     })
