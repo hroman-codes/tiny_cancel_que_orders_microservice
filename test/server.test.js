@@ -27,6 +27,12 @@ describe('GET endpoint', function() {
 });
 
 describe('POST endpoint', function() {
+
+    let JSON_SERVER_URI = process.env.JSON_SERVER_URI;
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    })
     
     test('should return an 200 status', async () => {
         const response = await supertest(app).post('/subscription/webhook')
@@ -39,9 +45,9 @@ describe('POST endpoint', function() {
     })
 
     // Attempt 1
-    test('mock axios call to API', async () => {
+    test('mock axios call to POST API', async () => {
         // setup
-        mockAxios.get.mockImplementationOnce(() => Promise.resolve({
+       mockAxios.get.mockImplementationOnce(() => Promise.resolve({
             data: {     
                 "customer_id": 1, 
                 "status": "Active" 
@@ -49,19 +55,19 @@ describe('POST endpoint', function() {
         }))
         
         // work
-        const subscriptions = await supertest(app).post('/subscription/webhook')
+        const response = await supertest(app).post('/subscription/webhook')
 
         // assertions
-        expect(200)
-        expect(mockAxios.get).toHaveBeenCalledTimes(3);
-        expect(mockAxios.get).toHaveBeenCalledWith("`https://api.rechargeapps.com/subscriptions?customer_id=1&status=ACTIVE`", 
+        expect(response.statusCode).toBe(200);
+        expect(mockAxios.get).toHaveBeenCalledTimes(1);
+        expect(mockAxios.get).toHaveBeenCalledWith(`https://api.rechargeapps.com/subscriptions?customer_id=1&status=ACTIVE`, 
             {
                 "headers": {"Accept": "application/json; charset=utf-8;", 
                 "Content-Type": "application/json", 
                 "X-Recharge-Access-Token": process.env.RECHARGE_API_KEY
             }
         })
-        expect(mockAxios.get.data.customer_id).toEqual(1)
     })
 
 })
+ 
