@@ -77,17 +77,11 @@ if(process.env.NODE_ENV === 'production') {
                                         }
                                 })
                             }
-                        } else {
-                            // if no queued orders exist then do nothing
-                            console.log('Customer has no queued orders ❌')
                         }
                     })
                     .catch((err) => {
                         console.log(err)
                     })
-            } else {
-                // if customer has active subs do nothing 
-                console.log('Customer has active subs do nothing ❌')
             }
         })
         .catch((err) => {
@@ -96,12 +90,20 @@ if(process.env.NODE_ENV === 'production') {
         res.status(200).end()
     })
 
+    app.use(function (req, res, next) {
+        res.status(404).send('404 Unable to find the requested resource!')
+    })
+
     app.listen(port, host, function() {
         console.log(`Listening on ${ port }`)
     });
     
     module.exports = app;
-} else {    // listen for root http call 
+} else {    
+    const BASE_WEBHOOK_URI = process.env.BASE_WEBHOOK_URI
+    const JSON_SERVER_URI = process.env.JSON_SERVER_URI 
+
+    // listen for root http call 
     app.get('/', function (req, res) {
         // instantiate a recharge session (include the api token)
         const rechargeClient = Axios.create({
@@ -116,7 +118,7 @@ if(process.env.NODE_ENV === 'production') {
 
         // create a webhook
         rechargeClient.post('https://api.rechargeapps.com/webhooks', {
-                "address": "https://dfc1-173-77-234-181.ngrok.io/subscription/webhook",
+                "address": `${BASE_WEBHOOK_URI}/subscription/webhook`,
                 "topic": "subscription/cancelled"
             }
         )
@@ -132,7 +134,7 @@ if(process.env.NODE_ENV === 'production') {
     // listen for webhook response
     app.post('/subscription/webhook', function (req, res) {
         // fetch the subscription that are active
-        axios.get(`https://f54f-173-77-234-181.ngrok.io/subscriptions`, {
+        axios.get(`${JSON_SERVER_URI}/subscriptions`, {
             headers: {
                 'Accept': 'application/json; charset=utf-8;',
                 'Content-Type': 'application/json',
@@ -146,9 +148,8 @@ if(process.env.NODE_ENV === 'production') {
             if (activeSubscription.length === 0) {
                 // proceed to check for queued orders ✅
                 console.log('Customer doesnt have active subs go ahead check for queued orders ✅')
-                // `https://776d-173-77-234-181.ngrok.io/queuedOrders` <<< mock api json server queuedOrders
-                // `https://776d-173-77-234-181.ngrok.io/nonQueuedOrders` <<< mock api json server nonQueuedOrders
-                axios.get(`https://f54f-173-77-234-181.ngrok.io/queuedOrders`, {
+
+                axios.get(`${JSON_SERVER_URI}/queuedOrders`, {
                         headers: {
                         'Accept': 'application/json; charset=utf-8;',
                         'Content-Type': 'application/json',
@@ -166,26 +167,18 @@ if(process.env.NODE_ENV === 'production') {
                                 console.log('orderID >>', orderID);
                                 console.log(`delete this order ${queuedOrders[i]} ❌`);
                                 // delete the order
-                                axios.delete(`https://f54f-173-77-234-181.ngrok.io/queuedOrders/${orderID}`, {
+                                axios.delete(`${JSON_SERVER_URI}/queuedOrders/${orderID}`, {
                                     headers: {
                                         'X-Recharge-Access-Token': process.env.RECHARGE_API_KEY,
                                         }
                                 })
                             }
-                        } else {
-                            // if no queued orders exist then do nothing
-                            console.log('Customer has no queued orders ❌')
-                            // return 
-                        }
+                        } 
                     })
                     .catch((err) => {
                         console.log(err)
                     })
-            } else {
-                // if customer has active subs do nothing 
-                console.log('Customer has active subs do nothing ❌')
-                // return
-            }
+            } 
         })
         .catch((err) => {
             console.log(err)
@@ -193,6 +186,11 @@ if(process.env.NODE_ENV === 'production') {
         res.status(200).end()
     })
 
+    app.use(function (req, res, next) {
+        res.status(404).send('404 Unable to find the requested resource!')
+    })
+
+    // middleware that responds to 404
     app.listen(port, host, function() {
         console.log(`Listening on ${ port }`)
     });
@@ -201,3 +199,4 @@ if(process.env.NODE_ENV === 'production') {
 }
 
 console.log(`We are running in ${process.env.NODE_ENV} mode 🏃‍♂️`)
+ 
